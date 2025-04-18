@@ -3,7 +3,7 @@ import time
 
 # Set up the SQLAlchemy engine with connection pooling
 engine = create_engine(
-    "mssql+pyodbc://localhost/navitaire?driver=ODBC+Driver+17+for+SQL+Server",
+    "mssql+pyodbc://localhost/Navitaire?driver=ODBC+Driver+17+for+SQL+Server",
     pool_size=5,      # Maximum number of connections in the pool
     max_overflow=2,   # Additional connections beyond the pool size
     pool_timeout=10,  # Timeout for acquiring a connection
