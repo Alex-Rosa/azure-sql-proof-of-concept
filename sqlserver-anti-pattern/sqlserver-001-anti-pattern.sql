@@ -47,7 +47,7 @@ sql
 WHERE EmailAddress = 'john@example.com' OR 1=1;
 
 */
-EXEC dbo.GetCustomerByEmailCorrectPattern
+EXEC dbo.GetCustomerByEmailAntiPattern
     @Email = 'orlando0@adventure-works.com';
 
 EXEC dbo.GetCustomerByEmailAntiPattern

@@ -12,7 +12,7 @@ Efficient Plan Reuse: SQL Server caches and reuses execution plans, reducing unn
 
 Improved Performance: The query operates in a safer and faster manner without bloating the plan cache.
 */
-CREATE PROCEDURE dbo.GetCustomerByEmailCorrectPattern
+CREATE PROCEDURE dbo.GetCustomerByEmailAntiPatternRefactored
     @Email NVARCHAR(50)
 AS
 BEGIN
@@ -31,10 +31,10 @@ BEGIN
 END;
 
 -- Proof of Concept
-EXEC dbo.GetCustomerByEmailCorrectPattern
+EXEC dbo.GetCustomerByEmailAntiPatternRefactor
     @Email = 'orlando0@adventure-works.com';
 
-EXEC dbo.GetCustomerByEmailCorrectPattern
+EXEC dbo.GetCustomerByEmailAntiPatternRefactor
     @Email = 'orlando0@adventure-works.com'' OR 1=1 --';
 
 
@@ -63,7 +63,7 @@ FETCH NEXT FROM EmailCursor INTO @Email;
 WHILE @@FETCH_STATUS = 0
 BEGIN
     -- Call the stored procedure with the current email
-    EXEC dbo.GetCustomerByEmailCorrectPattern @Email;
+    EXEC dbo.GetCustomerByEmailAntiPatternRefactor @Email;
 
     -- Fetch the next email
     FETCH NEXT FROM EmailCursor INTO @Email;
