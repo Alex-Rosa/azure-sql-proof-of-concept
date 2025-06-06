@@ -2,33 +2,6 @@ DBCC FREEPROCCACHE WITH NO_INFOMSGS;
 -- Anti-Pattern
 
 /*
-Anti-Pattern: Inappropriate Use of Dynamic SQL
-This stored procedure creates a SELECT query for the SalesLT.Customer table by concatenating string values directly, 
-which exposes the system to SQL injection risks and leads to poor plan cache management.
-
-Issues: SQL Injection Vulnerability: Malicious input for @Email can compromise the database.
-Example: Passing john@example.com' OR 1=1 -- would return all rows.
-
-Plan Cache Bloat: Each variation in @Email leads to a new query plan being compiled and stored.
-
-Performance Impact: Repeated recompilations degrade server efficiency.
-*/
-CREATE PROCEDURE dbo.GetCustomerByEmailAntiPattern
-    @Email NVARCHAR(50)
-AS
-BEGIN
-    DECLARE @SQL NVARCHAR(MAX);
-
-    -- Dynamic SQL construction with direct concatenation (anti-pattern)
-    SET @SQL = 'SELECT CustomerID, FirstName, LastName, EmailAddress ' +
-               'FROM SalesLT.Customer ' +
-               'WHERE EmailAddress = ''' + @Email + '''';
-
-    -- Execution of unparameterized dynamic SQL
-    EXEC(@SQL);
-END;
-
-/*
 Script to Simulate the Malicious Input
 
 Explanation of the Malicious Input:
@@ -100,7 +73,7 @@ For each email address, the anti-pattern procedure dbo.GetCustomerByEmailAntiPat
 Since this procedure uses unparameterized dynamic SQL, a new query plan is generated and added to the plan cache for each unique email address.
 
 Impact:
-If the table contains many email addresses, the plan cache will fill up with ad hoc plans—one for each email—creating Plan Cache Bloat.
+If the table contains many email addresses, the plan cache will fill up with ad hoc plansï¿½one for each emailï¿½creating Plan Cache Bloat.
 This degrades server performance by consuming memory and forcing SQL Server to compile new plans repeatedly.
 
 Cursor Management:
@@ -163,7 +136,7 @@ Use SQL Server Management Studio to check query execution plans before and after
 
 Run SET STATISTICS TIME ON; and SET STATISTICS IO ON; to monitor CPU and I/O usage.
 
-Here’s a SQL query to help you identify CompanyName values for both High Cardinality (many matching rows) and Low Cardinality (few matching rows):
+Hereï¿½s a SQL query to help you identify CompanyName values for both High Cardinality (many matching rows) and Low Cardinality (few matching rows):
 */
 -- Query to identify CompanyName values with row counts
 SELECT CompanyName,
